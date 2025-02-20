@@ -8,7 +8,7 @@ df["Date"] = pd.to_datetime(df["Date"], errors='coerce') #having errors extracti
 
 @app.route("/")
 def home():
-    return "<p>Welcome to the 2025 Fed Inflation Newscast Data API. Go ahead and filter the inflation data by month, day, or type (CPI,PCE).</p>"
+    return "<p>Welcome to the 2025 Fed Inflation Newscast Data API. Go ahead and filter the inflation data by month (01 or 02, e.g., filter?month=1). Soon I will update with more filters.</p>"
 
 @app.route("/sum", methods=["GET"])
 def sum():
