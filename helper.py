@@ -1,4 +1,5 @@
 import pandas as pd
+from ydata_profiling import ProfileReport
 
 def load_data(filename="inflation_data.csv"):
     """Load dataset and handle errors."""
@@ -17,3 +18,10 @@ def filter_by_month(df, month):
 
     filtered_df = df[df["Date"].dt.month == month]
     return filtered_df.to_dict(orient="records") if not filtered_df.empty else None
+
+#For use within app.py
+def generate_profile(df, output_file="profiling_report.html"):
+    """Generate and save a profiling report."""
+    profile = ProfileReport(df, title="Inflation Data Profiling Report", explorative=True)
+    profile.to_file(output_file)
+    return output_file  
