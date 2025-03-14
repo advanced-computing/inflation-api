@@ -1,15 +1,21 @@
 import pandas as pd
 from ydata_profiling import ProfileReport
+import duckdb
 
-def load_data(filename="inflation_data.csv"):
-    """Load dataset and handle errors."""
+def load_data_from_duckdb():
     try:
-        df = pd.read_csv(filename)
-        df["Date"] = pd.to_datetime(df["Date"], errors="coerce")
+        con = duckdb.connect("my_database.duckdb")
+        df = con.execute("SELECT * FROM inflation_data;").fetchdf()
+        con.close()
+        
+        # Convert 'Date' column to datetime if not already
+        if "Date" in df.columns:
+            df["Date"] = pd.to_datetime(df["Date"], errors="coerce")
+        
         return df
     except Exception as e:
-        print(f"Error loading data: {e}")
-        return None  # Handle missing or corrupt file
+        print(f"Error loading data from DuckDB: {e}")
+        return None  # Handle database errors
 
 def filter_by_month(df, month):
     """Filter dataset by a given month."""
